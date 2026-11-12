@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dutch-board : Lobe announcements</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@600;700&family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #eef6f0; }
+        .font-fredoka { font-family: 'Fredoka', sans-serif; }
+        .bubbly-pink-text {
+            font-family: 'DynaPuff', 'Fredoka', cursive;
+            color: #ff6b9d;
+            text-shadow: 0 4px 0 #ffffff, 0 8px 0 #ffc2d6, 0 12px 25px rgba(255, 105, 155, 0.35);
+        }
+        .dashboard-shell {
+            background: linear-gradient(135deg, #ccead4 0%, #d8f0de 48%, #f9dce6 100%);
+            box-shadow: 0 30px 70px -15px rgba(74, 124, 92, 0.22), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+        }
+        .mini-cal-panel { background: linear-gradient(160deg, #b3dec0 0%, #f5cad8 100%); }
+        .schedule-header-panel { background: linear-gradient(90deg, #b5dfc2 0%, #f4c6d5 100%); }
+        @keyframes progressShrink { 0% { width: 100%; } 100% { width: 0%; } }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 p-3 sm:p-6">
+
+    <!-- 3-SECOND BUBBLY PINK INTRO -->
+    <div id="funsie-intro" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-[#dcf7e4] via-[#fff0f5] to-[#ffd6e4] transition-all duration-500">
+        <div class="max-w-3xl mx-4 px-8 py-12 sm:px-14 sm:py-14 rounded-[42px] bg-white/85 backdrop-blur-md border-4 border-[#ffb3c9] shadow-2xl text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#dcf5e3] border-2 border-[#9ee0b3] text-[#2c5e3f] font-fredoka font-semibold text-sm mb-5">
+                <span>🌸 Welcome to Dutch-board : Lobe announcements 💗</span>
+            </div>
+            <h1 class="bubbly-pink-text text-4xl sm:text-6xl md:text-7xl font-bold leading-tight py-2">
+                dutch my yobmot<br>bawal tomboy hater
+            </h1>
+            <div class="mt-6 w-64 sm:w-80 mx-auto h-3 bg-[#dcf5e3] rounded-full overflow-hidden border border-[#a5e0b8] p-0.5">
+                <div class="h-full bg-gradient-to-r from-[#ff85a9] to-[#7bdba0] rounded-full" style="animation: progressShrink 3s linear forwards;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTAINER (100% PUBLIC VIEWER - NO ADMIN ACCESS) -->
+    <div class="max-w-[1400px] mx-auto dashboard-shell rounded-[38px] p-5 sm:p-8 border-4 border-white/80">
+        <header class="flex flex-wrap items-center justify-between gap-4 pb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-white border-2 border-[#ff9ebb] flex items-center justify-center text-[#e04d7a] text-2xl">🌸</div>
+                <h1 class="font-fredoka text-xl sm:text-2xl font-bold text-[#244f35]">
+                    Dutch-board : <span class="bg-white/85 text-[#d94676] px-3 py-0.5 rounded-full border border-[#ffc2d6]">Lobe announcements</span>
+                </h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="px-3 py-1.5 rounded-full bg-white/85 text-xs font-bold text-[#244f35] flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#52b774] animate-pulse"></span> Live Updates Active
+                </span>
+                <button onclick="replayFunsieIntro()" class="px-5 py-2.5 rounded-full bg-[#ffe5ec] hover:bg-[#ffc4d6] text-[#c93b67] font-bold text-xs shadow-sm border border-[#ffb3c9] transition">
+                    ✨ Replay 3s Intro
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+            <!-- Left Column: Mini Calendar + Undated Side Announcements -->
+            <div class="xl:col-span-4 space-y-5">
+                <div class="mini-cal-panel rounded-[28px] p-5 border-2 border-white/75">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 id="cal-month-title" class="font-extrabold text-[#244f35]">November 2026</h3>
+                        <div class="flex gap-1">
+                            <button onclick="shiftMonth(-1)" class="w-7 h-7 rounded-full bg-white/80 font-bold">&lt;</button>
+                            <button onclick="shiftMonth(1)" class="w-7 h-7 rounded-full bg-white/80 font-bold">&gt;</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 text-center text-[11px] font-bold text-[#244f35] mb-2">
+                        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                    </div>
+                    <div id="mini-cal-days" class="grid grid-cols-7 gap-1 text-center text-xs font-bold"></div>
+                </div>
+
+                <div class="bg-white/95 rounded-[28px] p-5 border-2 border-[#ffc4d6] shadow-sm">
+                    <h3 class="font-extrabold text-[#244f35] text-sm mb-1">📌 No-Date Announcements</h3>
+                    <p class="text-[11px] text-slate-400 mb-3">Events without a date sorted on the side (click to enlarge)</p>
+                    <div id="side-undated-list" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <!-- Right Column: Main Calendar Schedule & Month Events -->
+            <div class="xl:col-span-8 schedule-header-panel rounded-[32px] p-4 sm:p-6 border-2 border-white/80">
+                <div class="flex items-center justify-between pb-4">
+                    <h2 id="board-heading" class="text-lg sm:text-xl font-extrabold text-[#244f35]">Events This Month</h2>
+                    <span class="text-xs font-bold text-[#d94676] bg-white/85 px-3 py-1 rounded-full">Click any event to enlarge!</span>
+                </div>
+                <div id="main-events-grid" class="bg-white/95 rounded-[24px] p-5 min-h-[460px] grid grid-cols-1 md:grid-cols-2 gap-4 content-start"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLICK TO ENLARGE MODAL -->
+    <div id="detail-modal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div id="detail-card" class="w-full max-w-lg rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#ffe5ec] to-[#dcf5e3] border-4 border-white shadow-2xl">
+            <div class="flex justify-between items-start">
+                <span id="m-emoji" class="text-3xl bg-white w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm">🌸</span>
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white font-bold">✕</button>
+            </div>
+            <p id="m-date" class="text-xs font-extrabold text-[#d94676] mt-3"></p>
+            <h3 id="m-title" class="text-2xl font-extrabold text-[#244f35] mt-1"></h3>
+            <p id="m-loc" class="text-xs font-bold text-slate-600 mt-1"></p>
+            <div class="mt-4 p-4 rounded-2xl bg-white/90 border border-white">
+                <div class="text-[10px] font-extrabold uppercase text-[#d94676]">✨ The Gist of the Event</div>
+                <p id="m-gist" class="text-sm font-bold text-[#244f35] mt-0.5"></p>
+            </div>
+            <div class="mt-3 p-4 rounded-2xl bg-white/75">
+                <div class="text-[10px] font-extrabold uppercase text-[#244f35]">Full Announcement Details</div>
+                <p id="m-details" class="text-sm text-slate-700 mt-1 whitespace-pre-line"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // ============================================================================
+        // SHARED REAL-TIME DATABASE ENGINE (Firebase Cloud + IndexedDB + Broadcast)
+        // Works on GitHub Pages + Firebase AND locally in VS Code Live Server!
+        // ============================================================================
+        let FIREBASE_DB_URL = localStorage.getItem('dutch_board_fb_url') || 'https://dutch-board-b12ca-default-rtdb.firebaseio.com';
+        const DB_NAME = 'DutchBoardLobeDB';
+        const STORE_NAME = 'announcements_store';
+        const syncChannel = typeof BroadcastChannel !== 'undefined'
+            ? new BroadcastChannel('dutch_board_lobe_live_channel')
+            : null;
+
+        const defaultAnnouncements = [
+    {
+        "id": "evt-1",
+        "title": "Morning Matcha & Lobe Catchup",
+        "emoji": "🍵",
+        "hasDate": true,
+        "date": "2026-11-10",
+        "time": "10 Am - 11 Am",
+        "slot": "Morning",
+        "theme": "green",
+        "location": "Cozy Bean Cafe & Discord",
+        "gist": "Morning matcha session + planning our upcoming weekend hangouts!",
+        "details": "Bring your best energy and your favorite iced matcha latte! We will be going over all the November plans, sharing chika, and making sure everyone is updated on the group trip itinerary.",
+        "likes": 24,
+        "createdAt": 1731200000001
+    },
+    {
+        "id": "evt-2",
+        "title": "Pink Cinema Night: RomCom Marathon",
+        "emoji": "🎬",
+        "hasDate": true,
+        "date": "2026-11-12",
+        "time": "11 Am - 1 Pm",
+        "slot": "Midday",
+        "theme": "pink",
+        "location": "Dutch Streaming Room",
+        "gist": "Watching 2 classic comfort movies together—wear pastel pink or green!",
+        "details": "Popcorn and tissues ready! Everyone voted for a back-to-back comfort movie marathon. Dress code is pastel pajamas, and remember the golden rule: bawal tomboy hater!",
+        "likes": 39,
+        "createdAt": 1731200000002
+    },
+    {
+        "id": "evt-3",
+        "title": "Lobe Late-Morning Brunch & Polaroids",
+        "emoji": "🍰",
+        "hasDate": true,
+        "date": "2026-11-12",
+        "time": "8 Am - 10 Am",
+        "slot": "Morning",
+        "theme": "green",
+        "location": "Garden Bistro Patio",
+        "gist": "Strawberry waffles, polaroid photo booth, and gift exchange.",
+        "details": "We reserved the corner greenhouse table! Bring at least 1 cute sticker or small trinket to swap with everyone. Extra instax film is already packed.",
+        "likes": 31,
+        "createdAt": 1731200000003
+    },
+    {
+        "id": "evt-4",
+        "title": "Karaoke & Acoustic Jam Session",
+        "emoji": "🎀",
+        "hasDate": true,
+        "date": "2026-11-13",
+        "time": "2 Pm - 4 Pm",
+        "slot": "Afternoon",
+        "theme": "pink",
+        "location": "Studio 7 Lounge",
+        "gist": "Duet battles and 2000s OPM throwbacks all afternoon!",
+        "details": "Warm up your vocal cords! Queue up your top 3 songs ahead of time so we maximize our 2-hour room block. Winner of the duet battle gets free dessert.",
+        "likes": 18,
+        "createdAt": 1731200000004
+    },
+    {
+        "id": "evt-5",
+        "title": "Sunset Picnic & Flower Bouquet DIY",
+        "emoji": "🌸",
+        "hasDate": true,
+        "date": "2026-11-14",
+        "time": "4 Pm - 6 Pm",
+        "slot": "Evening",
+        "theme": "green",
+        "location": "Emerald Park Lawn",
+        "gist": "Wrapping pastel pink & green flower bouquets before sunset!",
+        "details": "We bought wraps, ribbons, baby’s breath, and pink carnations! Bring a picnic mat and your favorite finger food. Photos start at 4:30 PM sharp for golden hour.",
+        "likes": 45,
+        "createdAt": 1731200000005
+    },
+    {
+        "id": "evt-6",
+        "title": "Sunday Co-op Gaming Tournament",
+        "emoji": "🎮",
+        "hasDate": true,
+        "date": "2026-11-15",
+        "time": "11 Am - 1 Pm",
+        "slot": "Midday",
+        "theme": "pink",
+        "location": "Lobe Voice Channel #1",
+        "gist": "Overcooked & Mario Kart chaos—loser treats milk tea!",
+        "details": "Teams will be drawn live at 11:00 AM! Make sure your mic and controller are charged.",
+        "likes": 27,
+        "createdAt": 1731200000006
+    },
+    {
+        "id": "und-1",
+        "title": "Official House Rule: Bawal Tomboy Hater 💖",
+        "emoji": "📢",
+        "hasDate": false,
+        "sideBox": "pinned",
+        "priority": 1,
+        "theme": "pink",
+        "location": "Everywhere on Dutch-board",
+        "gist": "Number #1 permanent rule for everyone visiting the Lobe board!",
+        "details": "As announced in our 3-second bubbly intro: \"dutch my yobmot bawal tomboy hater\"! Good vibes, supportive energy, and pure lobe only in this space.",
+        "likes": 99,
+        "createdAt": 1731200000007
+    },
+    {
+        "id": "und-2",
+        "title": "Shared Photo Album Link & Memories",
+        "emoji": "💌",
+        "hasDate": false,
+        "sideBox": "pinned",
+        "priority": 2,
+        "theme": "green",
+        "location": "Cloud Drive Folder",
+        "gist": "Upload all your candid shots and videos from our hangouts here!",
+        "details": "Whenever we finish an event, drop your raw photos and boomerang clips into our shared album so nobody misses out on the memories.",
+        "likes": 42,
+        "createdAt": 1731200000008
+    },
+    {
+        "id": "und-3",
+        "title": "Out-of-Town Beach Trip Polling (TBA Date)",
+        "emoji": "🌸",
+        "hasDate": false,
+        "sideBox": "pinned",
+        "priority": 1,
+        "theme": "pink",
+        "location": "Zambales / La Union",
+        "gist": "No final date yet! Vote on your free weekends so we can lock it in.",
+        "details": "We are planning a 2D1N pastel beach getaway! Since we do not have an exact date yet, this event is pinned here on the side. Let Dutch know which weekend works best for you.",
+        "likes": 53,
+        "createdAt": 1731200000009
+    },
+    {
+        "id": "und-4",
+        "title": "Matching Hoodie & Tote Bag Pre-Order",
+        "emoji": "🍵",
+        "hasDate": false,
+        "sideBox": "gist",
+        "priority": 2,
+        "theme": "green",
+        "location": "Group Order Sheet",
+        "gist": "Pastel green hoodies with pink embroidery—drop your sizes!",
+        "details": "We are printing custom \"Dutch-board : Lobe\" pastel hoodies and canvas tote bags. Comment your size (S / M / L / XL) before we finalize the batch.",
+        "likes": 36,
+        "createdAt": 1731200000010
+    },
+    {
+        "id": "und-5",
+        "title": "Spotify Collaborative Playlist",
+        "emoji": "✨",
+        "hasDate": false,
+        "sideBox": "gist",
+        "priority": 3,
+        "theme": "pink",
+        "location": "Spotify Jam Link",
+        "gist": "Add your current repeat tracks to our official roadtrip playlist!",
+        "details": "Whether it is roadtrip anthems, R&B, or late-night chill acoustic tracks, add up to 10 songs per person so our queue stays fresh.",
+        "likes": 29,
+        "createdAt": 1731200000011
+    }
+];
+
+        function setFirebaseUrl(url) {
+            FIREBASE_DB_URL = (url || '').trim().replace(/\/+$/, '');
+            localStorage.setItem('dutch_board_fb_url', FIREBASE_DB_URL);
+        }
+
+        function openLobeDB() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, 1);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function loadAllAnnouncementsFromDB() {
+            // 1. Try Firebase Realtime Database first if URL is configured
+            if (FIREBASE_DB_URL && FIREBASE_DB_URL.startsWith('https://')) {
+                try {
+                    const res = await fetch(FIREBASE_DB_URL + '/lobe_announcements.json');
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data) && data.length > 0) {
+                            return data;
+                        } else if (data && typeof data === 'object') {
+                            const arr = Object.values(data);
+                            if (arr.length > 0) return arr;
+                        }
+                        // Seed initial data to Firebase if empty
+                        await fetch(FIREBASE_DB_URL + '/lobe_announcements.json', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(defaultAnnouncements)
+                        });
+                        return [...defaultAnnouncements];
+                    }
+                } catch (err) {
+                    console.warn('Firebase fetch fallback to local DB:', err);
+                }
+            }
+
+            // 2. Fallback to Local IndexedDB
+            const db = await openLobeDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const getAllReq = store.getAll();
+                getAllReq.onsuccess = async () => {
+                    const items = getAllReq.result || [];
+                    if (items.length === 0) {
+                        await saveFullListToDB(defaultAnnouncements);
+                        resolve([...defaultAnnouncements]);
+                    } else {
+                        items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                        resolve(items);
+                    }
+                };
+                getAllReq.onerror = () => resolve([...defaultAnnouncements]);
+            });
+        }
+
+        async function saveFullListToDB(list) {
+            // 1. Save to Firebase Realtime Database if URL is configured
+            if (FIREBASE_DB_URL && FIREBASE_DB_URL.startsWith('https://')) {
+                try {
+                    await fetch(FIREBASE_DB_URL + '/lobe_announcements.json', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(list)
+                    });
+                } catch (err) {
+                    console.warn('Firebase save warning:', err);
+                }
+            }
+
+            // 2. Also save to Local IndexedDB & BroadcastChannel
+            const db = await openLobeDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                store.clear();
+                list.forEach((item) => store.put(item));
+                tx.oncomplete = () => {
+                    if (syncChannel) {
+                        syncChannel.postMessage({ type: 'LIVE_UPDATE', payload: list });
+                    }
+                    resolve();
+                };
+            });
+        }
+
+        let announcements = [];
+        let viewMonth = 10;
+        let viewYear = 2026;
+        const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+        setTimeout(() => {
+            const intro = document.getElementById('funsie-intro');
+            if (intro) intro.style.display = 'none';
+        }, 3000);
+
+        window.replayFunsieIntro = function() {
+            const intro = document.getElementById('funsie-intro');
+            if (!intro) return;
+            intro.style.display = 'flex';
+            setTimeout(() => {
+                intro.style.display = 'none';
+            }, 3000);
+        };
+
+        if (syncChannel) {
+            syncChannel.onmessage = (e) => {
+                if (e.data && e.data.type === 'LIVE_UPDATE') {
+                    announcements = e.data.payload;
+                    renderBoard();
+                }
+            };
+        }
+
+        function shiftMonth(dir) {
+            viewMonth += dir;
+            if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+            if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+            renderBoard();
+        }
+
+        function renderBoard() {
+            document.getElementById('cal-month-title').textContent = MONTHS[viewMonth] + ' ' + viewYear;
+            const firstDay = new Date(viewYear, viewMonth, 1);
+            const offset = (firstDay.getDay() + 6) % 7;
+            const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+            let calHtml = '';
+            for (let i = 0; i < offset; i++) calHtml += '<div></div>';
+            for (let d = 1; d <= totalDays; d++) {
+                const key = viewYear + '-' + String(viewMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                const dayEvs = announcements.filter(a => a.hasDate && a.date === key);
+                const cls = dayEvs.length
+                    ? (dayEvs[0].theme === 'pink' ? 'bg-[#ffc4d6] text-[#7a1c3a]' : 'bg-[#9ee8b5] text-[#1c472b]')
+                    : 'hover:bg-white/60 text-[#244f35]';
+                calHtml += '<button onclick="clickDate(\'' + key + '\')" class="h-8 w-8 mx-auto rounded-full ' + cls + '">' + d + '</button>';
+            }
+            document.getElementById('mini-cal-days').innerHTML = calHtml;
+
+            // Render Undated Side Announcements
+            const undated = announcements.filter(a => !a.hasDate);
+            document.getElementById('side-undated-list').innerHTML = undated.map(item => `
+                <div onclick="showDetail('${item.id}')" class="cursor-pointer p-3 rounded-2xl border ${item.theme === 'pink' ? 'bg-[#fff0f5] border-[#ffc4d6]' : 'bg-[#f0fbf3] border-[#b9f0c9]'} hover:scale-[1.02] transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold text-[#244f35]">${item.emoji || '🌸'} ${item.title}</span>
+                        <span class="text-[10px] font-bold text-[#d94676]">Enlarge ↗</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 mt-1">${item.gist}</p>
+                </div>
+            `).join('');
+
+            // Render Dated Events
+            const dated = announcements.filter(a => a.hasDate);
+            document.getElementById('main-events-grid').innerHTML = dated.map(ev => `
+                <div onclick="showDetail('${ev.id}')" class="cursor-pointer p-5 rounded-[24px] border-2 ${ev.theme === 'pink' ? 'bg-[#ffc4d6] border-[#ff9ebb] text-[#6e1735]' : 'bg-[#b9f0c9] border-[#82dba0] text-[#1c472b]'} hover:-translate-y-1 transition shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl bg-white/90 w-10 h-10 rounded-xl flex items-center justify-center">${ev.emoji || '🌸'}</span>
+                        <span class="text-xs font-extrabold bg-white/85 px-3 py-1 rounded-full">${ev.date} • ${ev.time || ''}</span>
+                    </div>
+                    <h4 class="text-base font-extrabold mt-3">${ev.title}</h4>
+                    <p class="text-xs font-bold mt-1 opacity-90">✨ Gist: ${ev.gist}</p>
+                </div>
+            `).join('');
+        }
+
+        window.clickDate = function(key) {
+            const found = announcements.find(a => a.hasDate && a.date === key);
+            if (found) showDetail(found.id);
+        };
+
+        window.showDetail = function(id) {
+            const item = announcements.find(a => a.id === id);
+            if (!item) return;
+            document.getElementById('m-emoji').textContent = item.emoji || '🌸';
+            document.getElementById('m-date').textContent = item.hasDate ? (item.date + ' • ' + (item.time || '')) : '📌 No-Date Side Announcement';
+            document.getElementById('m-title').textContent = item.title;
+            document.getElementById('m-loc').textContent = '📍 ' + (item.location || 'Lobe Lounge');
+            document.getElementById('m-gist').textContent = item.gist;
+            document.getElementById('m-details').textContent = item.details;
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeModal = function() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        loadAllAnnouncementsFromDB().then(list => {
+            announcements = list;
+            renderBoard();
+        });
+
+        // Poll Firebase every 4 seconds so mates on GitHub Pages see new posts live!
+        setInterval(async () => {
+            if (FIREBASE_DB_URL && FIREBASE_DB_URL.startsWith('https://')) {
+                const latest = await loadAllAnnouncementsFromDB();
+                if (JSON.stringify(latest) !== JSON.stringify(announcements)) {
+                    announcements = latest;
+                    renderBoard();
+                }
+            }
+        }, 4000);
+    </script>
+</body>
+</html>
